@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>DTS 204 Revision &mdash; Final Sprint</title>
+<style>
+:root {
+  --ink: #1c2620;
+  --paper: #f7f5ef;
+  --card: #ffffff;
+  --line: #dcd6c6;
+  --accent: #1f6f5c;
+  --accent-soft: #e4efe9;
+  --amber: #b5772e;
+  --amber-soft: #fbf0e2;
+  --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.5;
+  padding-bottom: 40px;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14px 16px 0 16px;
+}
+header h1 {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  margin: 0 0 2px 0;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+header .sub {
+  font-size: 0.75rem;
+  opacity: 0.65;
+  margin-bottom: 10px;
+}
+nav {
+  display: flex;
+  overflow-x: auto;
+  gap: 6px;
+  padding-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+nav::-webkit-scrollbar { display: none; }
+.navbtn {
+  flex: 0 0 auto;
+  background: rgba(255,255,255,0.08);
+  color: var(--paper);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-family: var(--sans);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.navbtn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 18px 14px 0 14px;
+}
+.panel { display: none; }
+.panel.active { display: block; animation: fadein 0.2s ease; }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+.panel h2 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  margin: 4px 0 10px 0;
+  color: var(--ink);
+  border-bottom: 3px solid var(--accent);
+  display: inline-block;
+  padding-bottom: 4px;
+}
+.sectionintro {
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  margin-bottom: 18px;
+  color: #244038;
+}
+.subhead {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  margin: 24px 0 10px 0;
+  color: var(--accent);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 6px;
+}
+.qa {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.qa summary {
+  padding: 11px 14px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary::after {
+  content: '+';
+  margin-left: auto;
+  color: var(--accent);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.qa[open] summary::after { content: '\2212'; }
+.qa[open] summary {
+  border-bottom: 1px solid var(--line);
+  background: var(--accent-soft);
+}
+.qnum {
+  flex: 0 0 auto;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-family: var(--mono);
+}
+.qbody { padding: 12px 14px 14px 14px; }
+.qtext {
+  font-size: 0.85rem;
+  color: #555;
+  font-style: italic;
+  margin: 0 0 10px 0;
+}
+.answer {
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.answer ol, .answer ul { margin: 6px 0; padding-left: 20px; }
+.answer li { margin-bottom: 3px; }
+code {
+  background: #eeeade;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.82em;
+  color: #7a3d10;
+}
+pre.code {
+  background: #1c2620;
+  color: #d9f5e5;
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  overflow-x: auto;
+  margin: 10px 0;
+  line-height: 1.5;
+  white-space: pre;
+}
+.tip {
+  margin-top: 10px;
+  background: var(--amber-soft);
+  border-left: 3px solid var(--amber);
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 0.82rem;
+  color: #5c3a15;
+}
+.tip.standalone { margin-top: 14px; margin-bottom: 18px; }
+.tiplabel {
+  display: block;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--amber);
+  margin-bottom: 2px;
+}
+.tablewrap { overflow-x: auto; margin-bottom: 6px; -webkit-overflow-scrolling: touch; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.82rem;
+}
+th {
+  background: var(--ink);
+  color: var(--paper);
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+.tiplist {
+  padding-left: 22px;
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+.tiplist li { margin-bottom: 10px; }
+.expandall {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+@media (min-width: 700px) {
+  header h1 { font-size: 1.35rem; }
+  .panel h2 { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+<header>
+<h1>DTS 204 &mdash; Final Sprint Revision</h1>
+<div class="sub">Statistical Computing, Inference &amp; Modeling &middot; UNILAG</div>
+<nav>
+<button class="navbtn active" data-target="paper">Past Paper</button>
+<button class="navbtn" data-target="viz">Visualization</button>
+<button class="navbtn" data-target="mock">Mock Exams</button>
+<button class="navbtn" data-target="shortqa">102 Q&amp;A</button>
+<button class="navbtn" data-target="ribbon">Ribbon/Menus</button>
+<button class="navbtn" data-target="procedures">Procedures</button>
+<button class="navbtn" data-target="tips">Final Tips</button>
+</nav>
+</header>
+<main>
+<button class="expandall" onclick="toggleAll(this)">Expand all in this section</button>
+<section id="paper" class="panel active"><h2>Past Paper</h2><div class="sectionintro">The actual sampled past paper for this course, fully solved, sub-part by sub-part. Each card opens to show the model answer plus an exam tip on how marks are actually awarded.</div><details class="qa">
+<summary><span class="qnum">1(a)</span>Remove duplicate records in Excel (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">Outline the step-by-step procedure in Microsoft Excel to identify and remove duplicate records.</p>
+<div class="answer">1. Select the data range including the headers.
+2. Data &rarr; Data Tools &rarr; Remove Duplicates.
+3. Tick "My data has headers".
+4. Tick the column(s) Excel should compare (e.g. Student_ID).
+5. Click OK &mdash; Excel reports how many duplicate rows were removed.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Exam tip: they want the SEQUENCE, in order. Losing marks here almost always means skipping step 3 or 4.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(b)</span>Handling missing values (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">Describe how you would handle missing values in Excel using at least three different methods, stating when each is appropriate.</p>
+<div class="answer">1. <b>Deletion</b> &mdash; filter the column for (Blanks) and delete those rows. Appropriate when only a few values are missing from a large dataset.
+2. <b>Mean/median imputation</b> &mdash; replace blanks with =AVERAGE(range) or the median. Appropriate for numeric data missing at random.
+3. <b>Mode/constant imputation</b> &mdash; fill categorical blanks with the most common category or a marker like N/A. Appropriate for categorical variables.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Always pair each method with its 'when' &mdash; naming 3 methods alone loses half the marks.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(c)</span>The IF function (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Explain how the IF function can be used to categorize students into Pass and Fail based on a Test Score threshold of 50. Write the formula.</p>
+<div class="answer">The IF function tests a condition and returns one value if true, another if false. If Test Score is in cell F2:<pre class="code">=IF(F2&gt;=50,&quot;Pass&quot;,&quot;Fail&quot;)</pre>This checks whether F2 is at least 50; if true it returns Pass, otherwise Fail.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Formula questions always want the exact syntax &mdash; quotes around text, comma placement matters.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(d)</span>Importing into SPSS (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Describe the steps to import the dataset into IBM SPSS Statistics and define variable properties (type, label, value labels).</p>
+<div class="answer">1. File &rarr; Import Data &rarr; Excel (or CSV); tick "Read variable names from the first row".
+2. In Variable View, for each variable set: <b>Type</b> (numeric/string), <b>Label</b> (a descriptive name, e.g. "Test Score (%)"), and <b>Values</b> (value labels for coded categories, e.g. 1 = Male, 2 = Female for Gender).</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Notice this combines an Excel-side action (import) with an SPSS-side action (Variable View) &mdash; read the whole question before answering.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(e)</span>Identifying outliers in SPSS (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Explain how you would identify outliers in SPSS using graphical and statistical methods.</p>
+<div class="answer">Analyze &rarr; Descriptive Statistics &rarr; Explore; move the variable (e.g. Test Score) into Dependent List; under Plots tick Boxplot. Graphically, points plotted beyond the boxplot's whiskers are outliers. Statistically, the Extreme Values table in the output lists the highest and lowest cases by case number.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Give BOTH the graphical answer (boxplot whiskers) and statistical answer (Extreme Values table) &mdash; the question explicitly asks for both.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(f)</span>Data View vs Variable View (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Distinguish between Data View and Variable View in SPSS.</p>
+<div class="answer">Data View displays the actual data: each row is a case (record) and each column is a variable. Variable View displays the definition/metadata of each variable (name, type, label, values, measure): here each row is one variable.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>The row-meaning flips between the two views &mdash; that's the entire answer in one sentence.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(g)</span>Excel vs SPSS (3.5 marks)</summary>
+<div class="qbody">
+<p class="qtext">Discuss two advantages and two limitations of Excel compared to SPSS for data management.</p>
+<div class="answer"><b>Advantages of Excel:</b> (1) widely available and familiar, so data entry and basic calculation are fast; (2) low cost and excellent for quick charting and everyday tabulation.
+<b>Limitations of Excel:</b> (1) not built for advanced inferential statistics (no built-in t-tests, ANOVA tables, regression diagnostics comparable to SPSS); (2) no built-in variable metadata (labels, coded values, measurement level) the way SPSS's Variable View provides, making large research datasets harder to document and manage.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>2 + 2 structure exactly &mdash; don't give 3 advantages and 1 limitation, match the question's split.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(a)</span>Mean, Median, Mode (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">Define and differentiate between Mean, Median, and Mode.</p>
+<div class="answer"><b>Mean</b> is the arithmetic average &mdash; sum of all values divided by their count; sensitive to extreme values (outliers). <b>Median</b> is the middle value when data are ordered; not affected by extreme values, so it is preferred for skewed data. <b>Mode</b> is the most frequently occurring value; the only measure of central tendency usable for purely categorical data.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>The 'why' matters: Mean is outlier-sensitive, Median isn't, Mode works on categories. That's the differentiator they're testing.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(b)</span>Standard deviation (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">Explain how standard deviation measures variability, and interpret a high vs low value.</p>
+<div class="answer">Standard deviation measures how far, on average, individual values lie from the mean &mdash; the square root of the variance. A low standard deviation means values cluster tightly around the mean (consistent, predictable data); a high standard deviation means values are spread widely (more variable, less predictable data). Example: a low SD in Salary means most staff earn close to the average; a high SD means salaries vary widely.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Always give a real-world interpretation example &mdash; definition alone rarely gets full marks.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(c)</span>Descriptive stats in Excel (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Describe the procedure in Excel to compute descriptive statistics using built-in functions (no computation required).</p>
+<div class="answer">Apply the relevant functions directly to the Salary column: =AVERAGE(range) for the mean, =MEDIAN(range) for the median, =MODE.SNGL(range) for the mode, =STDEV.S(range) for sample standard deviation, =MAX(range)/=MIN(range) for the extremes, and =COUNT(range) for the sample size.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Know these 6 functions cold: AVERAGE, MEDIAN, MODE.SNGL, STDEV.S, MAX/MIN, COUNT.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(d)</span>Descriptive stats in SPSS (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Outline the steps to generate descriptive statistics for Salary in SPSS.</p>
+<div class="answer">Analyze &rarr; Descriptive Statistics &rarr; Descriptives; move Salary into the variable list; click Options and tick the required statistics (Mean, Std. Deviation, Minimum, Maximum); click Continue, then OK.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Descriptives (not Frequencies) is the path for Mean/SD/Min/Max &mdash; remember the split from Section K.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(e)</span>Independent samples t-test (3.5 marks)</summary>
+<div class="qbody">
+<p class="qtext">Explain the concept of an independent samples t-test, including its assumptions.</p>
+<div class="answer">An independent-samples t-test compares the means of a continuous variable (e.g. Salary) between two separate, unrelated groups (e.g. Male vs Female) to test whether the difference between their means is statistically significant.
+<b>Assumptions:</b> (1) the dependent variable is continuous; (2) observations are independent; (3) the dependent variable is approximately normally distributed in each group; (4) the two groups have approximately equal variances (homogeneity of variance, often checked with Levene's test).</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>4 assumptions, always in this order: continuous DV &rarr; independence &rarr; normality &rarr; equal variances (Levene's).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(f)</span>t-test in SPSS (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Describe how you would perform a t-test in SPSS and interpret the p-value.</p>
+<div class="answer">Analyze &rarr; Compare Means &rarr; Independent-Samples T Test; move Salary into Test Variable, Gender into Grouping Variable, and Define Groups (e.g. 1 and 2). Click OK. In the output, read Sig. (2-tailed): if it is less than 0.05, the difference in means between the two groups is statistically significant at the 5% level.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>'Sig. (2-tailed)' IS the p-value &mdash; state this explicitly, examiners look for that exact phrase.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(g)</span>t-test vs ANOVA (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Explain the difference between t-test and ANOVA, and when each should be used.</p>
+<div class="answer">A t-test compares the means of exactly two groups. ANOVA compares the means of three or more groups in a single test, avoiding the inflated Type I error rate that would come from running many pairwise t-tests. Use a t-test for two groups (e.g. Male vs Female); use ANOVA when comparing three or more (e.g. three Departments).</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>The WHY matters: running many t-tests inflates Type I error &mdash; that's the real reason ANOVA exists, not just convenience.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(a)</span>Multiple regression model (3.5 marks)</summary>
+<div class="qbody">
+<p class="qtext">Write the general form of a multiple linear regression model and define each term.</p>
+<div class="answer">y = &beta;<sub>0</sub> + &beta;<sub>1</sub>x<sub>1</sub> + &beta;<sub>2</sub>x<sub>2</sub> + &hellip; + &beta;<sub>n</sub>x<sub>n</sub> + &epsilon;<br><br>where y is the dependent variable (Productivity); x&#8321;,&hellip;,x&#8345; are the independent variables/predictors (Training Hours, Experience, Job Satisfaction); &beta;&#8320; is the intercept (predicted y when all x = 0); &beta;&#8321;,&hellip;,&beta;&#8345; are the coefficients, each representing the change in y for a one-unit change in that predictor, holding the others constant; &epsilon; is the random error term.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Write the formula AND define every single symbol &mdash; each symbol left undefined can cost a mark.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(b)</span>Regression in Excel (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Explain how regression analysis can be performed in Excel using the Data Analysis ToolPak (outline steps only).</p>
+<div class="answer">1. Ensure the Analysis ToolPak is loaded (File &rarr; Options &rarr; Add-Ins &rarr; Analysis ToolPak).
+2. Data &rarr; Data Analysis &rarr; Regression.
+3. Set Input Y Range to Productivity; set Input X Range to Training Hours, Experience and Job Satisfaction (adjacent columns).
+4. Tick Labels, choose an output location, OK.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>'Adjacent columns' is the exam trap word for multiple regression in Excel &mdash; your X variables MUST sit next to each other.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(c)</span>Multiple regression in SPSS (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">Describe the steps to run a multiple regression model in IBM SPSS Statistics.</p>
+<div class="answer">Analyze &rarr; Regression &rarr; Linear; move Productivity into Dependent; move Training Hours, Experience and Job Satisfaction into Independent(s); optionally tick Collinearity diagnostics under Statistics; click OK. The output gives the Model Summary, ANOVA table, and Coefficients table.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Name all 3 output tables &mdash; Model Summary, ANOVA, Coefficients &mdash; this is asked constantly.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(d)</span>R-squared and Adjusted R-squared (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Interpret the meaning of R-squared and Adjusted R-squared.</p>
+<div class="answer">R&sup2; is the proportion of variance in the dependent variable explained by the model (0 to 1); higher generally means a better fit. Adjusted R&sup2; corrects R&sup2; for the number of predictors, only increasing when a new predictor improves the model more than expected by chance &mdash; the reliable metric for comparing models with different numbers of predictors.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Key phrase: Adjusted R&sup2; 'penalizes' adding useless predictors &mdash; plain R&sup2; never decreases even with junk variables.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(e)</span>Multicollinearity (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Explain the concept of multicollinearity and how it can be detected in SPSS.</p>
+<div class="answer">Multicollinearity occurs when two or more independent variables are highly correlated with each other, making it difficult to isolate each predictor's individual effect and destabilising the coefficient estimates. In SPSS it is detected via Collinearity diagnostics in the Linear Regression Statistics dialog, which reports Tolerance (low values, e.g. &lt; 0.1, indicate a problem) and VIF (Variance Inflation Factor; values above 10 indicate serious multicollinearity).</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Memorize the exact numbers: Tolerance &lt; 0.1 = problem. VIF &gt; 10 = serious problem.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(f)</span>Assumptions of linear regression (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">State and explain at least three assumptions of linear regression.</p>
+<div class="answer">1. <b>Linearity</b> &mdash; the relationship between predictors and the target is genuinely linear.
+2. <b>Independence of errors</b> &mdash; residuals are independent of one another, no repeating pattern.
+3. <b>Homoscedasticity</b> &mdash; residuals have constant variance across all predictor levels.
+4. <b>Normality of residuals</b> &mdash; the errors are approximately normally distributed.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Mnemonic: LINE &mdash; Linearity, Independence, Normality, Equal variance.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(g)</span>Interpreting a p-value (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">A regression output shows a predictor with p-value = 0.03. Explain what this implies at a 5% significance level.</p>
+<div class="answer">Since 0.03 &lt; 0.05, the predictor is statistically significant at the 5% level &mdash; we reject the null hypothesis that its coefficient is zero. This means the predictor has a genuine (non-zero) relationship with the dependent variable, and this effect is unlikely to be due to chance.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Always say the comparison explicitly (0.03 &lt; 0.05) before stating the conclusion &mdash; showing the comparison is where marks live.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(a)</span>List vs Tuple (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">Differentiate between these two examples of a sequence data type: List and Tuple.</p>
+<div class="answer">A list (e.g. [1,2,3]) is written with square brackets and is mutable &mdash; it can be changed after creation (append, remove, sort). A tuple (e.g. (4,5)) is written with parentheses and is immutable &mdash; it cannot be changed after creation. Tuples are slightly faster and can be used as dictionary keys; lists are used for data that will change.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Brackets: [ ] = list = mutable. ( ) = tuple = immutable. That's the whole exam trick.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(b)</span>Debug the pandas code (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">Running the given Python code gives an error. Debug the errors.</p>
+<div class="answer">Three bugs: (1) <code>import pandas</code> should be <code>import pandas as pd</code> since pd is used later; (2) the Name values Joel, Ahmed, christo are not quoted strings and not inside a list; (3) mismatched bracket &mdash; a ) is used instead of ].<br><br>Corrected code:<pre class="code">import pandas as pd
+data = {
+    &#x27;Name&#x27;: [&#x27;Joel&#x27;, &#x27;Ahmed&#x27;, &#x27;christo&#x27;],
+    &#x27;Sex&#x27;: [&#x27;M&#x27;, &#x27;M&#x27;, &#x27;M&#x27;],
+    &#x27;Score&#x27;: [72, 62, 66]
+}
+df = pd.DataFrame(data)
+print(df)</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Debug questions ALWAYS have 3 bug types: missing 'as pd' import alias, unquoted strings, mismatched brackets. Scan for exactly these 3 every time.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(c)</span>Surface area of a cylinder (4 marks)</summary>
+<div class="qbody">
+<p class="qtext">Write Python code to find the total surface area of a cylinder closed at both ends having diameter of 28 cm and height 7 cm. (&pi; = 3.142)</p>
+<div class="answer">Total surface area of a closed cylinder = 2&pi;r(r + h), with r = diameter/2 = 14.<pre class="code">pi = 3.142
+d = 28
+r = d / 2  # 14
+h = 7
+tsa = 2 * pi * r * (r + h)
+print(tsa)  # 1847.496</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Always convert diameter to radius FIRST (r = d/2) before plugging into the formula &mdash; this is the #1 mistake in cylinder questions.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(d)</span>Component bar chart (4.5 marks)</summary>
+<div class="qbody">
+<p class="qtext">Write Python code to draw a component bar chart with SS1 (A,B,C) having (5,6,7) students, and SS2 (A,B,C) having (4,6,8) students. Label y-axis 'No of Students', x-axis 'Class', title 'Component Bar Chart'.</p>
+<div class="answer">A component (stacked) bar chart stacks the SS2 values on top of the SS1 values for each class.<pre class="code">import matplotlib.pyplot as plt
+classes = [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;]
+ss1 = [5, 6, 7]
+ss2 = [4, 6, 8]
+plt.bar(classes, ss1, color=&#x27;blue&#x27;, label=&#x27;SS1&#x27;)
+plt.bar(classes, ss2, bottom=ss1, color=&#x27;orange&#x27;, label=&#x27;SS2&#x27;)
+plt.xlabel(&#x27;Class&#x27;)
+plt.ylabel(&#x27;No of Students&#x27;)
+plt.title(&#x27;Component Bar Chart&#x27;)
+plt.legend()
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>The keyword that makes it 'stacked/component' is <code>bottom=ss1</code> in the second bar() call &mdash; this is the ONE line that defines the whole chart type.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(e)</span>Transpose of a matrix (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">Write Python code to find the transpose of matrix D = [[2,3,6],[3,6,8],[1,0,5]].</p>
+<div class="answer"><pre class="code">import numpy as np
+D = [[2, 3, 6], [3, 6, 8], [1, 0, 5]]
+print(np.array(D).T)
+# [[2 3 1]
+#  [3 6 0]
+#  [6 8 5]]</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>The transpose trick is always the same: wrap in np.array(), then append .T</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">5(a)</span>Four Python data types (4 marks)</summary>
+<div class="qbody">
+<p class="qtext">State four data types with one example each in Python.</p>
+<div class="answer">int (x = 5), float (y = 3.14), str (name = "Ade"), bool (flag = True). (list, tuple, dict, set are also acceptable.)</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Always give the type NAME + a code example, not just the name alone.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">5(b)</span>Debug the scatter plot code (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">Debug the errors in the given scatter plot code.</p>
+<div class="answer">Bugs: (1) <code>label-Data Points</code> should be <code>label='Data Points'</code> (wrong operator and unquoted string); (2) <code>plt.xlabel(X-axis)</code> and <code>plt.ylabel(Y-axis)</code> need quoted strings; (3) <code>pl.show()</code> should be <code>plt.show()</code> (undefined name pl); (4) <code>import matplotlib.pyplot as plt</code> is missing.<pre class="code">import matplotlib.pyplot as plt
+x = [1, 2, 3, 4, 5, 6]
+y = [10, 15, 7, 12, 18, 15]
+plt.scatter(x, y, color=&#x27;blue&#x27;, label=&#x27;Data Points&#x27;)
+plt.xlabel(&#x27;X-axis&#x27;)
+plt.ylabel(&#x27;Y-axis&#x27;)
+plt.legend()
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Watch for the dash-instead-of-equals trick (label-Data instead of label=). This is a deliberate, recurring exam trap.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">5(c)</span>Volume of a cylinder (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">Write Python code to find the volume of a cylinder whose base radius is 22 cm and height is 14 cm. &pi; = 3.142.</p>
+<div class="answer">Volume = &pi;r&sup2;h.<pre class="code">pi = 3.142
+r = 22
+h = 14
+volume = pi * r**2 * h
+print(volume)  # 21290.192</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Cylinder VOLUME uses r**2. Cylinder SURFACE AREA uses r(r+h) &mdash; don't mix the two formulas up under pressure.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">5(d)</span>Multiple lines (3.5 marks)</summary>
+<div class="qbody">
+<p class="qtext">Write Python code to plot multiple lines with X, Y1, Y2 given. Include title 'Multiple Lines'.</p>
+<div class="answer"><pre class="code">import matplotlib.pyplot as plt
+X = [2, 4, 6, 8, 10]
+Y1 = [1, 3, 5, 7, 9]
+Y2 = [3, 6, 9, 12, 15]
+plt.plot(X, Y1, label=&#x27;Y1&#x27;, marker=&#x27;o&#x27;)
+plt.plot(X, Y2, label=&#x27;Y2&#x27;, marker=&#x27;o&#x27;)
+plt.title(&#x27;Multiple Lines&#x27;)
+plt.xlabel(&#x27;X&#x27;)
+plt.ylabel(&#x27;Y&#x27;)
+plt.legend()
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Multiple lines = just call plt.plot() twice before plt.show(). Each call adds one more line to the same figure.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">5(e)</span>Pearson correlation (4 marks)</summary>
+<div class="qbody">
+<p class="qtext">Write Python code to determine the correlation coefficient of X and y using Pearson correlation, then print the value.</p>
+<div class="answer"><pre class="code">import numpy as np
+X = [1, 3, 5, 7, 9]
+y = [2, 4, 7, 12, 8]
+r = np.corrcoef(X, y)[0, 1]
+print(r)  # 0.822</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>np.corrcoef() returns a 2x2 matrix &mdash; you always need [0,1] to pull out the actual correlation number.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">6(a)</span>CSV and file path (2 marks)</summary>
+<div class="qbody">
+<p class="qtext">Give the uses of (i) CSV file (ii) file path in Python.</p>
+<div class="answer">(i) A CSV file stores tabular data as plain text with commas separating columns, used to import/export datasets, e.g. via pd.read_csv(). (ii) A file path is the address of a file on disk (absolute or relative), used to tell Python exactly where to find or save a file.</div>
+<div class="tip"><span class="tiplabel">Exam tip</span>-</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">6(b)</span>Debug the bar chart code (4 marks)</summary>
+<div class="qbody">
+<p class="qtext">Debug the errors in the given bar chart code.</p>
+<div class="answer">Bugs: (1) <code>items = (A, B, C, D]</code> has mismatched brackets and unquoted strings; should be a list of quoted strings; (2) <code>plt.title(...)</code> argument is not a quoted string; (3) <code>plt.xlabel(items)</code>/<code>plt.ylabel(sales)</code> pass the data variables instead of quoted axis-label text; (4) <code>import matplotlib.pyplot as plt</code> is missing.<pre class="code">import matplotlib.pyplot as plt
+items = [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;, &#x27;D&#x27;]
+sales = [30, 70, 50, 80]
+plt.bar(items, sales, color=&quot;blue&quot;)
+plt.title(&quot;Bar Chart showing sales of the week&quot;)
+plt.xlabel(&quot;Items&quot;)
+plt.ylabel(&quot;Sales&quot;)
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>Passing the raw variable name (items) into xlabel() instead of a quoted label string is a repeated trap &mdash; always check axis labels are actual text, not variables.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">6(c)</span>Volume of a sphere (3 marks)</summary>
+<div class="qbody">
+<p class="qtext">Write Python code to find the volume of a sphere whose radius is 22 cm. &pi; = 3.142.</p>
+<div class="answer">Volume of a sphere = (4/3)&pi;r&sup3;.<pre class="code">pi = 3.142
+r = 22
+volume = (4/3) * pi * r**3
+print(volume)  # 44608.021...</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>-</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">6(d)</span>Mean, median, mode, SD (5 marks)</summary>
+<div class="qbody">
+<p class="qtext">Given B = {2,4,6,6,8,4,6,10,6,8}, write Python code to find the mean, median, mode and standard deviation of B.</p>
+<div class="answer"><pre class="code">import statistics as st
+B = [2, 4, 6, 6, 8, 4, 6, 10, 6, 8]
+print(&#x27;Mean:&#x27;, st.mean(B))              # 6
+print(&#x27;Median:&#x27;, st.median(B))          # 6.0
+print(&#x27;Mode:&#x27;, st.mode(B))              # 6
+print(&#x27;SD (sample):&#x27;, st.stdev(B))      # 2.3094
+print(&#x27;SD (population):&#x27;, st.pstdev(B)) # 2.1909</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>The statistics module: mean(), median(), mode(), stdev() (sample), pstdev() (population). Know both stdev functions exist.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">6(e)</span>Pie chart (3.5 marks)</summary>
+<div class="qbody">
+<p class="qtext">Given items and sales lists, write Python code to plot a pie chart.</p>
+<div class="answer"><pre class="code">import matplotlib.pyplot as plt
+items = [&#x27;Wine&#x27;, &#x27;Toiletries&#x27;, &#x27;Cloths&#x27;, &#x27;cake&#x27;]
+sales = [60, 50, 40, 30]
+plt.pie(sales, labels=items, autopct=&#x27;%1.1f%%&#x27;)
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Exam tip</span>autopct='%1.1f%%' is the exact syntax that prints percentages on each pie slice &mdash; memorize this string exactly, it's easy to fumble under pressure.</div>
+</div>
+</details></section>
+<section id="viz" class="panel"><h2>Visualization</h2><div class="sectionintro">Every matplotlib chart follows this EXACT skeleton, memorize the shape not the specifics:
+<ol>
+<li><code>import matplotlib.pyplot as plt</code> (always first, always exactly this)</li>
+<li>Prepare your data as lists/variables</li>
+<li>Call the plotting function: <code>plt.bar()</code>, <code>plt.scatter()</code>, <code>plt.plot()</code>, or <code>plt.pie()</code></li>
+<li><code>plt.title("...")</code> &mdash; always a quoted string</li>
+<li><code>plt.xlabel("...")</code> and <code>plt.ylabel("...")</code> &mdash; always quoted strings (pie charts don't need these)</li>
+<li><code>plt.legend()</code> &mdash; only needed if you used label= anywhere</li>
+<li><code>plt.show()</code> &mdash; always last, always exactly this</li>
+</ol>
+<b>The debugging questions in this exam ONLY ever break these 4 things:</b>
+<ul>
+<li>Missing <code>import matplotlib.pyplot as plt</code> entirely</li>
+<li>Unquoted strings where text is expected (labels, titles) &mdash; e.g. <code>plt.title(Sales)</code> instead of <code>plt.title("Sales")</code></li>
+<li>Mismatched brackets &mdash; <code>(A, B, C]</code> instead of <code>['A','B','C']</code></li>
+<li>Wrong function name &mdash; <code>pl.show()</code> instead of <code>plt.show()</code>, or a stray <code>-</code> instead of <code>=</code> like <code>label-Data</code></li>
+</ul>
+Scan every debug question for exactly these 4 patterns first, before reading the code line by line.</div><h3 class="subhead">Quick lookup: goal &rarr; chart &rarr; function</h3><div class="tablewrap"><table><tr><th>Function</th><th>When to use</th><th>Chart name</th></tr><tr><td><code>plt.bar()</code></td><td>Category comparison</td><td>Bar / Column chart</td></tr><tr><td><code>plt.bar() + bottom=</code></td><td>Stacked contribution per category</td><td>Component / Stacked bar</td></tr><tr><td><code>plt.scatter()</code></td><td>Relationship between 2 numeric vars</td><td>Scatter plot</td></tr><tr><td><code>plt.plot()</code></td><td>Trend over time / ordered axis</td><td>Line chart</td></tr><tr><td><code>plt.pie()</code></td><td>Parts of a whole / percentage</td><td>Pie chart</td></tr><tr><td><code>sns.histplot(kde=True)</code></td><td>Distribution/spread of 1 variable</td><td>Histogram + KDE</td></tr><tr><td><code>sns.boxplot()</code></td><td>Spread + outliers, by group</td><td>Boxplot</td></tr><tr><td><code>sns.pairplot()</code></td><td>Every pairwise relationship at once</td><td>Pairplot</td></tr></table></div><h3 class="subhead">Every chart type, worked example</h3><details class="qa">
+<summary><span class="qnum">&#9634;</span>Simple Bar Chart</summary>
+<div class="qbody">
+<p class="qtext"><b>Use when:</b> Compare values across categories</p>
+<div class="answer"><pre class="code">import matplotlib.pyplot as plt
+items = [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;, &#x27;D&#x27;]
+values = [30, 70, 50, 80]
+plt.bar(items, values, color=&quot;blue&quot;)
+plt.title(&quot;My Bar Chart&quot;)
+plt.xlabel(&quot;Items&quot;)
+plt.ylabel(&quot;Values&quot;)
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Memorize</span>plt.bar(x, y) &mdash; that's the whole engine. Everything else is labels.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">&#9634;</span>Component / Stacked Bar Chart</summary>
+<div class="qbody">
+<p class="qtext"><b>Use when:</b> Show two groups stacked on top of each other per category</p>
+<div class="answer"><pre class="code">plt.bar(classes, group1, color=&#x27;blue&#x27;, label=&#x27;Group1&#x27;)
+plt.bar(classes, group2, bottom=group1, color=&#x27;orange&#x27;, label=&#x27;Group2&#x27;)
+plt.legend()
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Memorize</span>The ONLY difference from a normal bar chart is adding <code>bottom=group1</code> to the second bar() call. That single argument stacks it.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">&#9634;</span>Scatter Plot</summary>
+<div class="qbody">
+<p class="qtext"><b>Use when:</b> Show relationship between two numeric variables</p>
+<div class="answer"><pre class="code">plt.scatter(x, y, color=&#x27;blue&#x27;, label=&#x27;Data Points&#x27;)
+plt.xlabel(&#x27;X-axis&#x27;)
+plt.ylabel(&#x27;Y-axis&#x27;)
+plt.legend()
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Memorize</span>plt.scatter(x, y) &mdash; dots, not lines. Use when checking correlation/relationship, never for categories.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">&#9634;</span>Line Chart (single or multiple lines)</summary>
+<div class="qbody">
+<p class="qtext"><b>Use when:</b> Show a trend, especially over time</p>
+<div class="answer"><pre class="code">plt.plot(X, Y1, label=&#x27;Y1&#x27;, marker=&#x27;o&#x27;)
+plt.plot(X, Y2, label=&#x27;Y2&#x27;, marker=&#x27;o&#x27;)
+plt.title(&#x27;Multiple Lines&#x27;)
+plt.xlabel(&#x27;X&#x27;)
+plt.ylabel(&#x27;Y&#x27;)
+plt.legend()
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Memorize</span>Multiple lines = just multiple plt.plot() calls before plt.show(). marker='o' adds dots at each data point &mdash; nice to include, not mandatory.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">&#9634;</span>Pie Chart</summary>
+<div class="qbody">
+<p class="qtext"><b>Use when:</b> Show parts of a whole, percentage contribution</p>
+<div class="answer"><pre class="code">plt.pie(sales, labels=items, autopct=&#x27;%1.1f%%&#x27;)
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Memorize</span>Only 2 required arguments: the values (sales) and labels=. Add autopct='%1.1f%%' to show percentages on each slice &mdash; memorize this exact string.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">&#9634;</span>Histogram + KDE (Seaborn)</summary>
+<div class="qbody">
+<p class="qtext"><b>Use when:</b> Show distribution/spread of one numeric variable</p>
+<div class="answer"><pre class="code">import seaborn as sns
+sns.histplot(data=df, x=&#x27;sepal_length&#x27;, bins=20, kde=True)
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Memorize</span>This is SEABORN not matplotlib &mdash; note the import is <code>seaborn as sns</code>. kde=True adds the smooth curve on top of the bars.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">&#9634;</span>Boxplot (Seaborn)</summary>
+<div class="qbody">
+<p class="qtext"><b>Use when:</b> Show median, spread, and outliers, especially grouped by category</p>
+<div class="answer"><pre class="code">import seaborn as sns
+sns.boxplot(data=df, x=&#x27;Category&#x27;, y=&#x27;Unit_Price&#x27;)
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Memorize</span>sns.boxplot(data=df, x=category_col, y=numeric_col). The box shows quartiles; dots beyond the whiskers ARE the outliers.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">&#9634;</span>Pairplot (Seaborn)</summary>
+<div class="qbody">
+<p class="qtext"><b>Use when:</b> Grid of every pairwise relationship in a dataset, colored by group</p>
+<div class="answer"><pre class="code">import seaborn as sns
+sns.pairplot(data=df, hue=&#x27;group_column&#x27;)
+plt.show()</pre></div>
+<div class="tip"><span class="tiplabel">Memorize</span>One line only: sns.pairplot(data=df, hue='...'). This is the 'show me everything at once' exploratory chart.</div>
+</div>
+</details></section>
+<section id="mock" class="panel"><h2>Mock Exams</h2><div class="sectionintro">Two full mock exams, fully solved. Same format as the real paper &mdash; work through these under time pressure if you have minutes left.</div><h3 class="subhead">Mock Exam 1</h3><details class="qa">
+<summary><span class="qnum">1(a)</span>List the steps to convert this dataset into a proper Excel Table, and state two advantages of doing so.</summary>
+<div class="qbody">
+<div class="answer">Select any cell in the data &rarr; Ctrl+T &rarr; confirm the range and tick "My table has headers" &rarr; OK. Advantages: the table auto-expands as new rows are added so charts/formulas referencing it stay current; it supports structured references such as =SUM(Table1[Monthly_Sales]) which are clearer than plain cell ranges.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(b)</span>Write a nested IF formula that grades Monthly_Sales in cell D2 as High (&ge;100,000), Medium (&ge;50,000), or Low (below 50,000).</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">=IF(D2&gt;=100000,&quot;High&quot;,IF(D2&gt;=50000,&quot;Medium&quot;,&quot;Low&quot;))</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(c)</span>Describe the steps to build a PivotTable showing total Monthly_Sales by Region, and explain how to add a slicer for Department.</summary>
+<div class="qbody">
+<div class="answer">Click a cell in the dataset &rarr; Insert &rarr; PivotTable &rarr; New Worksheet &rarr; OK; drag Region into Rows and Monthly_Sales into Values (set to Sum). To add a slicer: click inside the PivotTable &rarr; PivotTable Analyze &rarr; Insert Slicer &rarr; tick Department &rarr; OK.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(d)</span>In SPSS, outline the steps to run a one-way ANOVA testing whether mean Monthly_Sales differs across Region.</summary>
+<div class="qbody">
+<div class="answer">Analyze &rarr; Compare Means &rarr; One-Way ANOVA; move Monthly_Sales into Dependent List and Region into Factor; OK. Read the Sig. value in the ANOVA output table.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(e)</span>State the SPSS Variable View property used to attach a code such as 1 = "North", 2 = "South" to the Region variable.</summary>
+<div class="qbody">
+<div class="answer">The <b>Values</b> column.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(a)</span>List the steps to load the Data Analysis ToolPak in Excel.</summary>
+<div class="qbody">
+<div class="answer">File &rarr; Options &rarr; Add-Ins &rarr; Manage: Excel Add-ins &rarr; Go &rarr; tick Analysis ToolPak &rarr; OK.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(b)</span>Outline the steps to run a regression in Excel with Monthly_Sales as dependent and Years_of_Service as independent, and name three items in the output.</summary>
+<div class="qbody">
+<div class="answer">Load the ToolPak; Data &rarr; Data Analysis &rarr; Regression; set Input Y Range to Monthly_Sales, Input X Range to Years_of_Service; tick Labels; choose output; OK. Output includes: the regression coefficients (intercept and slope), R Square, and the predictor's p-value.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(c)</span>Describe how to add a trendline with its equation and R&sup2; displayed on a scatter chart of the same two variables.</summary>
+<div class="qbody">
+<div class="answer">Click the data series on the scatter chart &rarr; right-click &rarr; Add Trendline &rarr; choose Linear &rarr; tick "Display Equation on chart" and "Display R-squared value on chart".</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(d)</span>Explain the difference between VLOOKUP and XLOOKUP, stating one limitation of VLOOKUP.</summary>
+<div class="qbody">
+<div class="answer">VLOOKUP searches only the first column of a table and returns a value from a column to its right (cannot look leftward); XLOOKUP can search and return from any column in either direction and includes a built-in "if not found" option, making it more flexible.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(a)</span>Debug: <code>scores = (88, 92, 79, 95, 84]</code> / <code>print(scores[0]</code></summary>
+<div class="qbody">
+<div class="answer">Two bugs: the tuple/list uses mismatched brackets, and the print statement is missing its closing bracket.<pre class="code">scores = [88, 92, 79, 95, 84]
+print(scores[0])</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(b)</span>Write Python code to compute the mean, median and standard deviation of scores = [88, 92, 79, 95, 84].</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">import statistics as st
+scores = [88, 92, 79, 95, 84]
+print(st.mean(scores), st.median(scores), st.stdev(scores))</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(c)</span>Write Python code to find the volume of a cone with base radius 6 cm and height 10 cm, given volume = (1/3)&pi;r&sup2;h and &pi;=3.142.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">pi = 3.142
+r = 6
+h = 10
+volume = (1/3) * pi * r**2 * h
+print(volume)  # 376.85 approx</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(d)</span>Write Python code that reads sales.csv into a pandas DataFrame and prints the first five rows, wrapped in try/except for a missing file.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">import pandas as pd
+try:
+    df = pd.read_csv(&#x27;sales.csv&#x27;)
+    print(df.head())
+except FileNotFoundError:
+    print(&quot;File not found&quot;)</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(a)</span>Explain the 80% Rule in data visualization and the three checks it implies.</summary>
+<div class="qbody">
+<div class="answer">The 80% Rule states that most of the work in visualization is preparing the data, not plotting it &mdash; garbage in, garbage out. The three checks: <code>df.info()</code> (types and non-null counts), <code>df.isnull().sum()</code> (missing values per column), <code>df.describe()</code> (min, max, mean, quartiles).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(b)</span>State and explain the four assumptions of linear regression.</summary>
+<div class="qbody">
+<div class="answer">Linearity &mdash; the relationship is genuinely linear; Independence of errors &mdash; residuals show no repeating pattern; Homoscedasticity &mdash; constant error variance across predictor levels; Normality of residuals &mdash; errors approximately normally distributed.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(c)</span>A company runs a one-way ANOVA comparing average delivery time across three couriers: F=8.42, p=0.001. Interpret at 5%, and state the next test.</summary>
+<div class="qbody">
+<div class="answer">Since p = 0.001 &lt; 0.05, we reject H0: at least one courier's mean delivery time differs significantly from the others. Next, run a Tukey HSD post-hoc test to identify exactly which pairs of couriers differ.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(d)</span>Differentiate Ridge regression from Lasso regression, and state one situation where Lasso is preferred.</summary>
+<div class="qbody">
+<div class="answer">Ridge (L2) shrinks coefficients toward zero but rarely to exactly zero; Lasso (L1) can shrink some coefficients to exactly zero, performing automatic feature selection. Lasso is preferred when many predictors are suspected to be irrelevant and a simpler, sparser model is wanted.</div>
+</div>
+</details><h3 class="subhead">Mock Exam 2</h3><details class="qa">
+<summary><span class="qnum">1(a)</span>List the steps to import this dataset from a CSV file into Excel, mentioning the delimiter.</summary>
+<div class="qbody">
+<div class="answer">Data &rarr; Get &amp; Transform Data &rarr; From Text/CSV; browse and click Import; confirm the delimiter is a comma in the preview; confirm the first row is treated as headers; click Load.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(b)</span>Describe three methods of handling missing values in the Units_Sold column, stating when each is appropriate.</summary>
+<div class="qbody">
+<div class="answer">Deletion (filter for Blanks, delete rows) &mdash; when few values are missing from a large dataset; mean/median imputation (=AVERAGE(range)) &mdash; for numeric data missing at random; mode/constant imputation &mdash; for categorical data or when missing itself is meaningful.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(c)</span>Write the Excel function that sums Units_Sold only for rows where Category equals Electronics.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">=SUMIF(Category_range,&quot;Electronics&quot;,Units_Sold_range)</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(d)</span>List the ten step-by-step process for building an Excel dashboard from this raw dataset.</summary>
+<div class="qbody">
+<div class="answer">(1) Prepare the raw data in tabular form; (2) clean the data (duplicates, blanks, formats); (3) convert to an Excel Table (Ctrl+T); (4) identify the KPIs; (5) create pivot tables; (6) create charts from the pivot tables; (7) add slicers and timelines; (8) design the layout (title, KPIs, charts, filters); (9) format (colours, fonts, no clutter); (10) test and update, refreshing with Data &rarr; Refresh All.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">1(e)</span>State three common mistakes to avoid when designing a dashboard.</summary>
+<div class="qbody">
+<div class="answer">Too many colours or chart types; too much crammed onto one page; forgetting to refresh pivot tables after new data is added.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(a)</span>List the ten characteristics set for each variable in SPSS's Variable View.</summary>
+<div class="qbody">
+<div class="answer">Name, Type, Width, Decimals, Label, Values, Missing, Columns, Align, Measure.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(b)</span>Describe the steps to run a Pearson correlation between Units_Sold and Unit_Price in SPSS.</summary>
+<div class="qbody">
+<div class="answer">Analyze &rarr; Correlate &rarr; Bivariate; move Units_Sold and Unit_Price into the variable box; keep Pearson ticked; OK.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(c)</span>A researcher wants to compare average Unit_Price across four Categories. State which test is appropriate and why, and the SPSS menu path.</summary>
+<div class="qbody">
+<div class="answer">One-way ANOVA, because we are comparing a continuous variable (Unit_Price) across three or more categories (four Categories); using multiple t-tests instead would inflate the Type I error rate. Menu path: Analyze &rarr; Compare Means &rarr; One-Way ANOVA.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">2(d)</span>Distinguish an independent-samples t-test from a paired-samples t-test, with an example of each.</summary>
+<div class="qbody">
+<div class="answer">An independent-samples t-test compares two separate, unrelated groups, e.g. average sales of Male vs Female customers. A paired-samples t-test compares two related measurements on the same cases, e.g. a store's sales before vs after a promotion.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(a)</span>Debug: <code>prices = [200, 450, 999</code> / <code>labels = (Cheap, Mid, Expensive)</code> / <code>print(labels[1]</code></summary>
+<div class="qbody">
+<div class="answer">Bugs: the list prices is missing its closing bracket; labels uses parentheses (tuple) with unquoted strings; the print statement is missing its closing bracket.<pre class="code">prices = [200, 450, 999]
+labels = (&#x27;Cheap&#x27;, &#x27;Mid&#x27;, &#x27;Expensive&#x27;)
+print(labels[1])</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(b)</span>Write Python code to build a pandas DataFrame from Product and Price lists, then print it.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">import pandas as pd
+data = {&#x27;Product&#x27;: [&#x27;Pen&#x27;, &#x27;Book&#x27;, &#x27;Bag&#x27;], &#x27;Price&#x27;: [50, 120, 300]}
+df = pd.DataFrame(data)
+print(df)</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(c)</span>Write Python code to compute the correlation coefficient between X=[10,20,30,40,50] and Y=[15,18,25,40,55].</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">import numpy as np
+X = [10, 20, 30, 40, 50]
+Y = [15, 18, 25, 40, 55]
+print(np.corrcoef(X, Y)[0, 1])</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">3(d)</span>Write Python code to find the surface area of a sphere (4&pi;r&sup2;) with radius 9 cm, &pi;=3.142.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">pi = 3.142
+r = 9
+sa = 4 * pi * r**2
+print(sa)  # 1017.972</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(a)</span>Write Seaborn code to produce a boxplot of Unit_Price grouped by Category, and explain what it reveals.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">import seaborn as sns
+import matplotlib.pyplot as plt
+sns.boxplot(data=df, x=&#x27;Category&#x27;, y=&#x27;Unit_Price&#x27;)
+plt.show()</pre>The boxplot reveals the median, quartiles (spread) and any outliers of Unit_Price within each Category, making it easy to compare distributions across categories at a glance.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(b)</span>Explain overfitting and underfitting, and state how K-Fold cross-validation helps detect them.</summary>
+<div class="qbody">
+<div class="answer">Overfitting: the model learns the training data too well, including noise &mdash; high training accuracy, poor test accuracy (high variance). Underfitting: the model is too simple to capture the pattern &mdash; poor accuracy on both training and test data (high bias). K-Fold cross-validation trains and tests the model across multiple folds of the data; a model that scores very differently on training folds vs held-out folds is likely overfitting, while one that scores poorly on all folds is likely underfitting.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(c)</span>Write statsmodels code to run a two-way ANOVA testing the effects of Category and Region (and their interaction) on Sales.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">import statsmodels.api as sm
+from statsmodels.formula.api import ols
+model = ols(&#x27;Sales ~ C(Category) + C(Region) + C(Category):C(Region)&#x27;, data=df).fit()
+print(sm.stats.anova_lm(model, typ=2))</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">4(d)</span>A Shapiro-Wilk test on ANOVA residuals returns p=0.01. What does this imply, and what alternative test should be used?</summary>
+<div class="qbody">
+<div class="answer">Since p = 0.01 &lt; 0.05, the residuals are not normally distributed, violating the normality assumption of ANOVA. The non-parametric alternative, the Kruskal-Wallis test, should be used instead.</div>
+</div>
+</details></section>
+<section id="shortqa" class="panel"><h2>102 Q&amp;A</h2><div class="sectionintro">All 102 short-answer questions from the full syllabus, grouped by section, question immediately followed by its answer &mdash; no flipping back and forth.</div><h3 class="subhead">Section A &mdash; Data Foundations (Types of Data)</h3><details class="qa">
+<summary><span class="qnum">A1</span>What is the Big Split in types of data? Name the two main categories.</summary>
+<div class="qbody">
+<div class="answer">The Big Split is between Quantitative (numeric) data and Qualitative (categorical) data.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">A2</span>Define discrete and continuous data, giving one example of each.</summary>
+<div class="qbody">
+<div class="answer">Discrete data is countable, whole values (e.g. number of students). Continuous data can take any value within a range (e.g. height, weight).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">A3</span>Define nominal data and give an example.</summary>
+<div class="qbody">
+<div class="answer">Nominal data has categories with no inherent order, e.g. sex (male/female) or nationality.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">A4</span>Define ordinal data and give an example.</summary>
+<div class="qbody">
+<div class="answer">Ordinal data has categories with a meaningful order but unequal gaps between them, e.g. class of degree (First, Second, Third) or a Likert scale.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">A5</span>Define interval data and give an example.</summary>
+<div class="qbody">
+<div class="answer">Interval data is ordered with equal gaps between points but has no true zero, e.g. temperature in Celsius (0&deg;C is not "no temperature").</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">A6</span>Define ratio data and give an example.</summary>
+<div class="qbody">
+<div class="answer">Ratio data is like interval data but has a true zero meaning "none", e.g. weight, length, or temperature in Kelvin.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">A7</span>Why does the level of measurement of a variable matter in SPSS?</summary>
+<div class="qbody">
+<div class="answer">It is exactly what the Measure column in SPSS's Variable View asks for (Scale, Ordinal or Nominal), and it decides which statistical test is valid for that variable.</div>
+</div>
+</details><h3 class="subhead">Section B &mdash; The Excel Environment and Basic Navigation</h3><details class="qa">
+<summary><span class="qnum">B1</span>What is a workbook, a worksheet and a cell in Excel?</summary>
+<div class="qbody">
+<div class="answer">A workbook is the file itself (.xlsx). A worksheet is one sheet inside the workbook, switched between using tabs. A cell is the intersection of a column and row, with the selected one called the active cell.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">B2</span>What does the Ribbon contain, and name three of its tabs.</summary>
+<div class="qbody">
+<div class="answer">The Ribbon is the command bar at the top of Excel; example tabs are File, Home, Insert, Page Layout, Formulas, Data, Review and View.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">B3</span>What is the Name Box used for?</summary>
+<div class="qbody">
+<div class="answer">The Name Box sits to the left of the formula bar; it shows the active cell's address and can be used to jump to or name a range.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">B4</span>List the steps to create and save a new workbook.</summary>
+<div class="qbody">
+<div class="answer">1) File &rarr; New &rarr; Blank workbook. 2) Enter the data. 3) File &rarr; Save As (or Ctrl+S). 4) Choose the folder, type a file name, select .xlsx, click Save.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">B5</span>What does Ctrl+End do in a worksheet?</summary>
+<div class="qbody">
+<div class="answer">It jumps the cursor to the last used cell in the worksheet.</div>
+</div>
+</details><h3 class="subhead">Section C &mdash; Entering, Editing and Managing Data</h3><details class="qa">
+<summary><span class="qnum">C1</span>Describe how to build a proper Excel Table from raw data.</summary>
+<div class="qbody">
+<div class="answer">Type column headings in row 1 and enter each record on its own row, select the whole range including headings, then press Ctrl+T, tick 'My table has headers', and click OK.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">C2</span>Differentiate AutoFill from Flash Fill.</summary>
+<div class="qbody">
+<div class="answer">AutoFill copies a value or extends a series (e.g. 1,2,3&hellip;) by dragging the fill handle. Flash Fill recognises a pattern from a typed example and completes the rest of a column automatically (Ctrl+E), without a formula.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">C3</span>How do you edit a cell using the keyboard?</summary>
+<div class="qbody">
+<div class="answer">Select the cell and press F2, edit its contents, then press Enter.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">C4</span>Name three options available under Paste Special.</summary>
+<div class="qbody">
+<div class="answer">Values (results only, drops formulas), Formats (formatting only), and Transpose (rows become columns and vice versa).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">C5</span>Describe Freeze Panes and explain why it is useful.</summary>
+<div class="qbody">
+<div class="answer">Freeze Panes keeps chosen rows/columns visible while scrolling: click the cell below/right of what should stay frozen, then View &rarr; Freeze Panes &rarr; Freeze Panes. It is useful for keeping headings in view in a large dataset.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">C6</span>How do you reference a cell on another worksheet?</summary>
+<div class="qbody">
+<div class="answer">Use the syntax =Sheet2!B5, or type =, click the other sheet's cell, and press Enter and Excel writes the reference automatically.</div>
+</div>
+</details><h3 class="subhead">Section D &mdash; Importing, Exporting and Formatting</h3><details class="qa">
+<summary><span class="qnum">D1</span>List the steps to import a CSV file into Excel, mentioning the delimiter.</summary>
+<div class="qbody">
+<div class="answer">1) Data &rarr; Get &amp; Transform Data &rarr; From Text/CSV. 2) Browse to the file, click Import. 3) In the preview, confirm the delimiter (comma for CSV) and file encoding. 4) Confirm the first row is treated as headers. 5) Click Load.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">D2</span>State what is lost when a workbook is saved as CSV.</summary>
+<div class="qbody">
+<div class="answer">Saving as CSV keeps only the active sheet and discards formatting and formulas.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">D3</span>Name three number format categories available in Format Cells.</summary>
+<div class="qbody">
+<div class="answer">Currency/Accounting, Percentage, and Date/Time (also Number, Text and Scientific are valid).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">D4</span>What does Wrap Text do, and why should you avoid Merge &amp; Center inside a dataset?</summary>
+<div class="qbody">
+<div class="answer">Wrap Text shows long text on several lines within a cell. Merge &amp; Center should be avoided inside a dataset because it breaks sorting, filtering and PivotTables.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">D5</span>What is the Format Painter used for?</summary>
+<div class="qbody">
+<div class="answer">It copies formatting from a selected cell to other target cells by clicking the paintbrush icon on the Home tab and dragging over the destination cells.</div>
+</div>
+</details><h3 class="subhead">Section E &mdash; Formulas and the Function Families</h3><details class="qa">
+<summary><span class="qnum">E1</span>Differentiate relative, absolute and mixed references, with examples.</summary>
+<div class="qbody">
+<div class="answer">Relative (A1): both column and row shift when copied. Absolute ($A$1): neither changes, fully locked. Mixed (A$1 or $A1): only the column or only the row is locked. Press F4 to cycle through the forms.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">E2</span>What are Named Ranges and why are they useful?</summary>
+<div class="qbody">
+<div class="answer">Named Ranges assign a name to a selected range (via the Name Box or Formulas &rarr; Define Name) so it can be used in formulas like =SUM(Sales) instead of =SUM(B2:B50); they are automatically absolute and make formulas more readable.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">E3</span>Name five formula error values and what each means.</summary>
+<div class="qbody">
+<div class="answer">#DIV/0! (division by zero), #VALUE! (wrong argument type), #REF! (invalid/deleted reference), #NAME? (unrecognised name), #N/A (a lookup found no match).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">E4</span>Write the IF formula that labels a Test Score in cell F2 as 'Pass' if it is at least 50, else 'Fail'.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">=IF(F2&gt;=50,&quot;Pass&quot;,&quot;Fail&quot;)</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">E5</span>Write a nested IF that grades an average score in G2 into Excellent/Good/Average/Poor at thresholds 70/60/50.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">=IF(G2&gt;=70,&quot;Excellent&quot;,IF(G2&gt;=60,&quot;Good&quot;,IF(G2&gt;=50,&quot;Average&quot;,&quot;Poor&quot;)))</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">E6</span>State the functions for a conditional count and a conditional sum, with their arguments.</summary>
+<div class="qbody">
+<div class="answer">=COUNTIF(range,criteria) counts cells matching one condition; =SUMIF(range,criteria,sum_range) sums cells matching one condition. COUNTIFS/SUMIFS extend these to several conditions.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">E7</span>Describe VLOOKUP and state one of its limitations. What replaces it in newer Excel?</summary>
+<div class="qbody">
+<div class="answer">=VLOOKUP(value,table,col_index,FALSE) searches the first column of a table and returns a value from a given column in the same row; its limitation is that it cannot look to the left. XLOOKUP replaces it, since it can search and return from any column in either direction.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">E8</span>What does the =TEXTJOIN function do?</summary>
+<div class="qbody">
+<div class="answer">It joins the values of a range into one string using a specified separator, e.g. =TEXTJOIN(", ",TRUE,A2:A10).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">E9</span>Give one statistical Excel function each for the sample standard deviation and for the correlation coefficient.</summary>
+<div class="qbody">
+<div class="answer">=STDEV.S(range) for sample standard deviation; =CORREL(array1,array2) for the correlation coefficient.</div>
+</div>
+</details><h3 class="subhead">Section F &mdash; Cleaning, Organising and Structuring Data</h3><details class="qa">
+<summary><span class="qnum">F1</span>List the steps to identify and remove duplicate records in Excel.</summary>
+<div class="qbody">
+<div class="answer">1) Select the data range including headers. 2) Data &rarr; Data Tools &rarr; Remove Duplicates. 3) Tick 'My data has headers'. 4) Tick the column(s) to check. 5) Click OK; Excel reports how many duplicates were removed.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">F2</span>Give three methods of handling missing values in Excel and when each fits.</summary>
+<div class="qbody">
+<div class="answer">1) Deletion &ndash; filter for blanks and delete rows; good for few missing values in a large dataset. 2) Mean/median imputation &ndash; fill numeric blanks with =AVERAGE(range); good for values missing at random. 3) Mode/constant imputation &ndash; fill categorical blanks with the most common category or a marker like N/A.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">F3</span>Describe how to correct numbers that are stored as text in Excel.</summary>
+<div class="qbody">
+<div class="answer">Select the affected cells and use 'Convert to Number', or apply =VALUE(A2), or run Data &rarr; Text to Columns and click Finish to re-parse the entries.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">F4</span>List the steps to create a drop-down list with Data Validation.</summary>
+<div class="qbody">
+<div class="answer">1) Select the cells. 2) Data &rarr; Data Tools &rarr; Data Validation. 3) Under Allow, choose List and type or select the entries. 4) Optionally set an Input Message and Error Alert. 5) Click OK.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">F5</span>List the steps to sort a dataset by two columns, then to filter it.</summary>
+<div class="qbody">
+<div class="answer">Sort: click a cell in the data, Data &rarr; Sort, choose the first column and order, click Add Level for the second column, tick 'My data has headers', OK. Filter: click a cell in the data, Data &rarr; Filter, then use each heading's drop-down arrow to tick/untick values or apply Number/Text/Date filters.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">F6</span>State four advantages of an Excel Table over a plain range.</summary>
+<div class="qbody">
+<div class="answer">It auto-expands as rows are added so references stay current; it applies banded formatting and filter buttons automatically; it supports a Total Row with summary functions; it allows structured references like =SUM(Table1[Sales]).</div>
+</div>
+</details><h3 class="subhead">Section G &mdash; Analysis Tools &ndash; Descriptive Statistics, Correlation, Regression</h3><details class="qa">
+<summary><span class="qnum">G1</span>List the steps to load the Data Analysis ToolPak.</summary>
+<div class="qbody">
+<div class="answer">1) File &rarr; Options &rarr; Add-Ins. 2) In the Manage box select Excel Add-ins, click Go. 3) Tick Analysis ToolPak, OK. It then appears as Data Analysis on the Data tab.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">G2</span>Name eight statistics reported by the ToolPak's Descriptive Statistics tool.</summary>
+<div class="qbody">
+<div class="answer">Mean, Standard Error, Median, Mode, Standard Deviation, Sample Variance, Kurtosis, Skewness (also Range, Minimum, Maximum, Sum and Count are valid).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">G3</span>Describe two ways to obtain a correlation in Excel.</summary>
+<div class="qbody">
+<div class="answer">1) Using the function =CORREL(array1,array2) between two variables. 2) Using Data &rarr; Data Analysis &rarr; Correlation, setting the Input Range across all numeric columns, to produce a full correlation matrix.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">G4</span>Outline the steps to run a regression with the ToolPak, and name three items in its output.</summary>
+<div class="qbody">
+<div class="answer">Ensure the ToolPak is loaded, then Data &rarr; Data Analysis &rarr; Regression; set Input Y Range to the dependent variable, Input X Range to the independent variable(s), tick Labels if present, choose an output location, OK. Output includes the regression coefficients, R Square, and an ANOVA table for overall fit.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">G5</span>State the function for a random whole number between two values, and one for a random decimal between 0 and 1.</summary>
+<div class="qbody">
+<div class="answer">=RANDBETWEEN(a,b) for a random whole number; =RAND() for a random decimal between 0 and 1.</div>
+</div>
+</details><h3 class="subhead">Section H &mdash; Charts, PivotTables and Dashboards</h3><details class="qa">
+<summary><span class="qnum">H1</span>List the steps to create a chart, including how data should be arranged for a scatter chart.</summary>
+<div class="qbody">
+<div class="answer">Arrange data in adjacent columns (for a scatter chart, the independent variable x first, then the dependent variable y); select the data including headings; Insert &rarr; Charts group &rarr; choose a chart type; Excel inserts the chart; add elements via the + button.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">H2</span>Name four chart types and state when each is appropriate.</summary>
+<div class="qbody">
+<div class="answer">Column/Bar &ndash; compare values across categories; Line &ndash; show a trend over time; Pie &ndash; show parts of a whole (few categories only); Scatter &ndash; show a relationship between two numeric variables.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">H3</span>Why should a line chart never be used for categorical data?</summary>
+<div class="qbody">
+<div class="answer">A line chart implies a continuous trend, which categories do not have; this is a classic wrong-chart exam trap.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">H4</span>Describe how to add a trendline showing the equation and R&sup2; to a scatter chart.</summary>
+<div class="qbody">
+<div class="answer">Click the data series, right-click &rarr; Add Trendline &rarr; choose Linear, then tick 'Display Equation on chart' and 'Display R-squared value on chart'.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">H5</span>List the steps to create a PivotTable and explain the four field areas.</summary>
+<div class="qbody">
+<div class="answer">Click a cell in the dataset, Insert &rarr; PivotTable, confirm the source range, choose New Worksheet, OK. In the Fields pane, drag fields into: Rows (categories down the side), Columns (categories across the top), Values (numbers to summarise), and Filters (filters the whole table).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">H6</span>Explain why a PivotTable must be refreshed.</summary>
+<div class="qbody">
+<div class="answer">A PivotTable does not auto-update when the source data changes; it must be refreshed via right-click &rarr; Refresh, or Data &rarr; Refresh All, otherwise it shows outdated figures.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">H7</span>List the basic components of an Excel dashboard in order.</summary>
+<div class="qbody">
+<div class="answer">Raw Data Sheet &rarr; Cleaned Data Sheet &rarr; Pivot Tables &rarr; Charts and Graphs &rarr; Key Performance Indicators &rarr; Slicers and Timelines &rarr; Dashboard Sheet.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">H8</span>State three common mistakes to avoid when designing a dashboard.</summary>
+<div class="qbody">
+<div class="answer">Using too many colours or chart types; cramming too much onto one page; forgetting to refresh pivot tables after new data is added.</div>
+</div>
+</details><h3 class="subhead">Section I &mdash; Printing, Protection and Advanced Tools</h3><details class="qa">
+<summary><span class="qnum">I1</span>Describe Goal Seek and list the steps to use it.</summary>
+<div class="qbody">
+<div class="answer">Goal Seek works backwards to find the input needed for a target result. Steps: Data &rarr; Forecast &rarr; What-If Analysis &rarr; Goal Seek; set the Set cell (formula cell), the To value (target result), and the By changing cell (input cell), then OK.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">I2</span>State the purpose of Scenario Manager and of Solver.</summary>
+<div class="qbody">
+<div class="answer">Scenario Manager stores several sets of input values (e.g. best case/worst case) and switches between them with a comparison summary. Solver is an add-in that finds the optimum value of a target cell by changing several input cells subject to constraints.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">I3</span>Describe how to protect a worksheet while leaving some cells editable.</summary>
+<div class="qbody">
+<div class="answer">Select the cells that should remain editable, Ctrl+1 &rarr; Protection &rarr; untick Locked, then apply Review &rarr; Protect Sheet.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">I4</span>List the steps to record a macro, and state the required file extension.</summary>
+<div class="qbody">
+<div class="answer">View &rarr; Macros &rarr; Record Macro &rarr; name it &rarr; OK &rarr; perform the actions &rarr; Stop Recording. A workbook containing macros must be saved with the .xlsm extension.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">I5</span>State the shortcut for Flash Fill and for toggling an absolute reference.</summary>
+<div class="qbody">
+<div class="answer">Ctrl+E for Flash Fill; F4 for toggling through relative/absolute/mixed references.</div>
+</div>
+</details><h3 class="subhead">Section J &mdash; Introducing SPSS and the Data Editor</h3><details class="qa">
+<summary><span class="qnum">J1</span>State what SPSS stands for and name its four windows.</summary>
+<div class="qbody">
+<div class="answer">SPSS stands for Statistical Package for the Social Sciences. Its four windows are the Data Editor, the Syntax window, the Output (Viewer) window, and the Script window.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">J2</span>Distinguish Data View from Variable View.</summary>
+<div class="qbody">
+<div class="answer">Data View displays the actual data, where each row is a case and each column is a variable. Variable View displays the definition of each variable, where each row is one variable.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">J3</span>List all ten Variable View columns.</summary>
+<div class="qbody">
+<div class="answer">Name, Type, Width, Decimals, Label, Values, Missing, Columns, Align, and Measure.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">J4</span>Which Variable View column would you use to attach a code such as 1 = 'Male', 2 = 'Female'?</summary>
+<div class="qbody">
+<div class="answer">The Values column, used to attach value labels to numeric category codes.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">J5</span>List the steps to import a CSV file into SPSS.</summary>
+<div class="qbody">
+<div class="answer">Save the file in a supported format, then File &rarr; Import Data &rarr; CSV (or File &rarr; Open &rarr; Data and change the file type); tick 'Read variable names from the first row' if headings exist; confirm the delimiter is a comma; proceed through the wizard until done.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">J6</span>List the steps to generate random numbers in SPSS.</summary>
+<div class="qbody">
+<div class="answer">Transform &rarr; Compute Variable; type a name in Target Variable; in Numeric Expression use RV.UNIFORM(a,b) or RV.NORMAL(mean,sd); click OK.</div>
+</div>
+</details><h3 class="subhead">Section K &mdash; Statistical Analysis in SPSS</h3><details class="qa">
+<summary><span class="qnum">K1</span>Describe how to obtain descriptive statistics (mean, median, mode) in SPSS.</summary>
+<div class="qbody">
+<div class="answer">For mean, SD, min, max use Analyze &rarr; Descriptive Statistics &rarr; Descriptives. For median and mode, use Analyze &rarr; Descriptive Statistics &rarr; Frequencies, then click Statistics and tick the required measures.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">K2</span>Describe how to identify outliers in SPSS.</summary>
+<div class="qbody">
+<div class="answer">Analyze &rarr; Descriptive Statistics &rarr; Explore; move the variable into Dependent List; under Plots choose Boxplot. Points beyond the whiskers are flagged as outliers, and the Extreme Values table lists the highest/lowest cases.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">K3</span>Outline the steps to run a linear regression in SPSS, and name three items in the output.</summary>
+<div class="qbody">
+<div class="answer">Analyze &rarr; Regression &rarr; Linear; move the dependent variable into Dependent and predictor(s) into Independent(s); optionally tick Collinearity diagnostics; click OK. Output includes the Model Summary (R&sup2;), the ANOVA table, and the Coefficients table.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">K4</span>Outline the steps to run an independent-samples t-test in SPSS.</summary>
+<div class="qbody">
+<div class="answer">Analyze &rarr; Compare Means &rarr; Independent-Samples T Test; set the Test Variable and Grouping Variable; click Define Groups to specify the two group codes; click OK; read Sig. (2-tailed) as the p-value.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">K5</span>State which test to use for a continuous variable across two groups, and across three or more groups.</summary>
+<div class="qbody">
+<div class="answer">Across two groups, use a t-test. Across three or more groups, use ANOVA.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">K6</span>Give two advantages and two limitations of Excel compared to SPSS.</summary>
+<div class="qbody">
+<div class="answer">Advantages: widely available and familiar, good for data entry and charting at low cost. Limitations: not built for advanced inferential statistics, and has no built-in variable metadata (labels, coded values, measurement level) the way SPSS does.</div>
+</div>
+</details><h3 class="subhead">Section L &mdash; Python Data Types, Structures and Debugging</h3><details class="qa">
+<summary><span class="qnum">L1</span>Differentiate a list from a tuple in Python.</summary>
+<div class="qbody">
+<div class="answer">A list ([]) is mutable and can be changed after creation (append, remove, sort). A tuple (()) is immutable and cannot be changed after creation; tuples are slightly faster and can be used as dictionary keys.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">L2</span>Name four Python data types with one example each.</summary>
+<div class="qbody">
+<div class="answer">int (x = 5), float (y = 3.14), str (name = "Ada"), bool (flag = True).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">L3</span>What is a pandas DataFrame, and how is it typically built from a dictionary?</summary>
+<div class="qbody">
+<div class="answer">A DataFrame is a table structure where each dictionary key becomes a column, e.g. df = pd.DataFrame({'Name': ['Joel','Ahmed'], 'Score': [72,62]}).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">L4</span>Differentiate an absolute file path from a relative one.</summary>
+<div class="qbody">
+<div class="answer">An absolute path gives a file's full address on disk (e.g. C:/Users/data.csv), while a relative path is given with respect to the current working directory (e.g. data/sales.csv).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">L5</span>Name the four most common categories of bug seen in this course's Python code, and give an example of one.</summary>
+<div class="qbody">
+<div class="answer">Unquoted strings (NameError), missing brackets/quotes/colons (SyntaxError), the wrong argument type (TypeError), and using the wrong chart type. Example: items = [A, B, C] should be items = ['A','B','C'].</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">L6</span>Debug this code: <code>items = (A, B, C, D]</code></summary>
+<div class="qbody">
+<div class="answer">The brackets are mismatched and the entries are unquoted. Corrected:<pre class="code">items = [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;, &#x27;D&#x27;]</pre></div>
+</div>
+</details><h3 class="subhead">Section M &mdash; Computation in Python</h3><details class="qa">
+<summary><span class="qnum">M1</span>Write Python code to find the volume of a cylinder with radius 22 cm and height 14 cm, using &pi;=3.142.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">pi = 3.142
+r = 22
+h = 14
+volume = pi * r**2 * h
+print(volume)  # 21290.192</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">M2</span>Write Python code for the mean, median, mode and standard deviation of a list B.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">import statistics as st
+B = [2, 4, 6, 6, 8, 4, 6, 10, 6, 8]
+print(st.mean(B), st.median(B), st.mode(B), st.stdev(B))</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">M3</span>Write Python code for the Pearson correlation of two lists X and y.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">import numpy as np
+X = [1, 3, 5, 7, 9]
+y = [2, 4, 7, 12, 8]
+print(np.corrcoef(X, y)[0, 1])</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">M4</span>Write Python code to find the transpose of a 3x3 matrix D using NumPy.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">import numpy as np
+D = [[2, 3, 6], [3, 6, 8], [1, 0, 5]]
+print(np.array(D).T)</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">M5</span>Write Python code to find the total surface area of a closed cylinder of diameter 28 cm and height 7 cm, &pi;=3.142.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">pi = 3.142
+r = 28 / 2
+h = 7
+tsa = 2 * pi * r * (r + h)
+print(tsa)  # 1847.496</pre></div>
+</div>
+</details><h3 class="subhead">Section N &mdash; Data Visualization in Python</h3><details class="qa">
+<summary><span class="qnum">N1</span>Explain why data visualization matters, and state the roles of Matplotlib, Seaborn and Plotly.</summary>
+<div class="qbody">
+<div class="answer">Visualization makes patterns, trends, comparisons and outliers visible so a human can judge and decide, since a table of raw numbers hides its message. Matplotlib is the foundational plotting library with full manual control; Seaborn builds on Matplotlib to produce polished statistical plots in one line; Plotly produces interactive, web-based charts.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">N2</span>State the 80% Rule and the three checks it implies before plotting.</summary>
+<div class="qbody">
+<div class="answer">The 80% Rule states that most of the work in visualization is preparing the data, not plotting it. The three checks are df.info() (data types and non-null counts), df.isnull().sum() (missing values per column), and df.describe() (min, max, mean, quartiles).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">N3</span>When would you use a bar chart versus a line chart versus a scatter plot?</summary>
+<div class="qbody">
+<div class="answer">A bar chart compares values across categories (e.g. average sepal length per species). A line chart shows a trend over an ordered axis such as time (e.g. passengers by year). A scatter plot shows the relationship between two numeric variables (e.g. sepal length vs petal length).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">N4</span>Write Seaborn code to plot a histogram with a KDE curve, and a boxplot.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">import seaborn as sns
+sns.histplot(data=df, x=&#x27;sepal_length&#x27;, bins=20, kde=True)
+sns.boxplot(data=df, x=&#x27;species&#x27;, y=&#x27;petal_length&#x27;)</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">N5</span>Explain the three-act structure of data storytelling.</summary>
+<div class="qbody">
+<div class="answer">Setup provides context (e.g. this is sales data from 2020-2025); Conflict reveals the insight (e.g. Q4 2024 had a 40% spike); Resolution recommends an action (e.g. invest in the product that drove the spike).</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">N6</span>Name the Seaborn function that produces a grid of every pairwise relationship in a dataset, coloured by group.</summary>
+<div class="qbody">
+<div class="answer">sns.pairplot(data=df, hue='group_column'), the ultimate exploratory tool for spotting clusters.</div>
+</div>
+</details><h3 class="subhead">Section O &mdash; Regression</h3><details class="qa">
+<summary><span class="qnum">O1</span>Define regression and explain what 'supervised' and 'continuous' mean in this context.</summary>
+<div class="qbody">
+<div class="answer">Regression is a supervised learning technique used to predict a continuous outcome. Supervised means the model learns from labelled examples (inputs paired with known outputs); continuous means the predicted quantity is a number on a continuous scale, not a category.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">O2</span>What is the cost function (MSE), and what does Ordinary Least Squares (OLS) do?</summary>
+<div class="qbody">
+<div class="answer">MSE is the average of the squared differences between actual and predicted values; it measures how wrong a candidate line is. OLS is the method that finds the coefficients minimising this MSE, i.e. the line of best fit.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">O3</span>State and explain the four assumptions of linear regression (LINE).</summary>
+<div class="qbody">
+<div class="answer">Linearity &ndash; the relationship is genuinely linear. Independence of errors &ndash; residuals show no repeating pattern. Normality of residuals &ndash; errors are approximately normally distributed. Equal variance (Homoscedasticity) &ndash; errors have constant variance across predictor levels.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">O4</span>Interpret &beta;<sub>0</sub> and &beta;<sub>1</sub> in the model y = &beta;<sub>0</sub> + &beta;<sub>1</sub>x.</summary>
+<div class="qbody">
+<div class="answer">&beta;&#8320; (the intercept) is the predicted value of y when x = 0. &beta;&#8321; (the slope/coefficient) is the change in y for a one-unit increase in x.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">O5</span>What does R&sup2; measure, and why is Adjusted R&sup2; preferred for multiple regression?</summary>
+<div class="qbody">
+<div class="answer">R&sup2; measures the proportion of variance in the target explained by the model (0 to 1). Adjusted R&sup2; is preferred for multiple regression because ordinary R&sup2; never decreases when a feature is added, even a useless one, whereas Adjusted R&sup2; penalises irrelevant features.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">O6</span>Explain overfitting versus underfitting, and how regularization helps.</summary>
+<div class="qbody">
+<div class="answer">Overfitting is when a model learns the training data too well, including its noise, performing well on training data but poorly on unseen data (high variance). Underfitting is when a model is too simple to capture the pattern, performing poorly on both (high bias). Regularization adds a penalty on large coefficients to the cost function, discouraging overly complex models and reducing overfitting.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">O7</span>Differentiate Ridge (L2) regression from Lasso (L1) regression.</summary>
+<div class="qbody">
+<div class="answer">Ridge shrinks coefficients toward zero but rarely to exactly zero. Lasso can shrink some coefficients to exactly zero, performing automatic feature selection; it is preferred when many predictors are suspected to be irrelevant.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">O8</span>Fit a simple linear regression with scikit-learn and print R&sup2;.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model = LinearRegression().fit(X_train, y_train)
+y_pred = model.predict(X_test)
+print(r2_score(y_test, y_pred))</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">O9</span>What is multicollinearity and how is it detected in SPSS?</summary>
+<div class="qbody">
+<div class="answer">Multicollinearity occurs when two or more independent variables are highly correlated with each other, destabilising coefficient estimates. It is detected in SPSS via Collinearity diagnostics, which report Tolerance (low values, e.g. below 0.1, indicate a problem) and VIF (values above 10 indicate serious multicollinearity).</div>
+</div>
+</details><h3 class="subhead">Section P &mdash; ANOVA</h3><details class="qa">
+<summary><span class="qnum">P1</span>What is ANOVA, and why not simply run many t-tests instead?</summary>
+<div class="qbody">
+<div class="answer">ANOVA (Analysis of Variance) tests whether there are significant differences between the means of three or more groups using a single F-test. Running many separate t-tests instead would inflate the Type I error rate, the chance of finding a difference that isn't really there.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">P2</span>Explain between-group variance versus within-group variance and how they form the F-statistic.</summary>
+<div class="qbody">
+<div class="answer">Between-group variance measures how much group means differ from one another (and the overall mean). Within-group variance measures how much values vary inside each group. The F-statistic is the ratio of between-group to within-group variance: F = MSbetween / MSwithin.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">P3</span>Differentiate one-way from two-way ANOVA, and explain what an interaction effect is.</summary>
+<div class="qbody">
+<div class="answer">One-way ANOVA examines one factor's effect on one dependent variable. Two-way ANOVA examines two factors and their interaction on one dependent variable. An interaction effect exists when the effect of one factor depends on the level of the other factor.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">P4</span>Name the three ANOVA assumptions and the test used to check each.</summary>
+<div class="qbody">
+<div class="answer">Independence of observations (ensured by study design); Normality of residuals, checked with the Shapiro-Wilk test; Homogeneity of variances, checked with Levene's test.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">P5</span>What alternative test is used when ANOVA data are non-normal? When variances are unequal?</summary>
+<div class="qbody">
+<div class="answer">When data are non-normal, use the Kruskal-Wallis test (non-parametric alternative). When variances are unequal, use Welch's ANOVA.</div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">P6</span>Run a one-way ANOVA with SciPy and interpret the p-value in code.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">from scipy.stats import f_oneway
+f_stat, p_value = f_oneway(group_A, group_B, group_C)
+print(f_stat, p_value)
+if p_value &lt; 0.05:
+    print(&#x27;At least two groups differ significantly&#x27;)</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">P7</span>Run a two-way ANOVA with statsmodels including the interaction term.</summary>
+<div class="qbody">
+<div class="answer"><pre class="code">import statsmodels.api as sm
+from statsmodels.formula.api import ols
+model = ols(&#x27;Growth ~ C(Fertilizer) + C(Sunlight) + C(Fertilizer):C(Sunlight)&#x27;, data=df).fit()
+print(sm.stats.anova_lm(model, typ=2))</pre></div>
+</div>
+</details><details class="qa">
+<summary><span class="qnum">P8</span>What does a significant Tukey HSD post-hoc test tell you that the ANOVA itself does not?</summary>
+<div class="qbody">
+<div class="answer">A significant ANOVA only shows that at least one group differs; Tukey's Honestly Significant Difference (HSD) test compares all pairs of groups to reveal exactly which specific pairs differ, while controlling the overall error rate.</div>
+</div>
+</details></section>
+<section id="ribbon" class="panel"><h2>Ribbon/Menus</h2><div class="sectionintro">Know which tab/menu a feature lives under before you even open the software &mdash; this alone speeds up procedural questions massively.</div><h3 class="subhead">Excel Ribbon</h3><div class="tablewrap"><table><tr><th>Tab</th><th>Contains</th></tr><tr><td><b>File</b></td><td>New, Open, Save/Save As, Print, Info (Protect Workbook, Encrypt with Password), Options (Add-Ins lives here)</td></tr><tr><td><b>Home</b></td><td>Font, Alignment, Number format, Styles (Cell Styles, Conditional Formatting), Cells (Insert/Delete/Format), Editing (Find & Select, AutoSum), Clipboard (Paste Special)</td></tr><tr><td><b>Insert</b></td><td>Tables (PivotTable, Table Ctrl+T), Charts group (all chart types), Sparklines</td></tr><tr><td><b>Page Layout</b></td><td>Print Area, Orientation, Size, Scale to Fit, Print Titles</td></tr><tr><td><b>Formulas</b></td><td>Function Library, Defined Names (Name Manager), Formula Auditing (Trace Precedents/Dependents, Evaluate Formula), Calculation</td></tr><tr><td><b>Data</b></td><td>Get &amp; Transform Data (From Text/CSV, Refresh All), Sort &amp; Filter, Data Tools (Remove Duplicates, Data Validation, Text to Columns), Forecast (What-If Analysis: Goal Seek), Data Analysis (ToolPak, once loaded)</td></tr><tr><td><b>Review</b></td><td>Spelling, Protect Sheet, Protect Workbook</td></tr><tr><td><b>View</b></td><td>Freeze Panes, Split, Gridlines on/off, Macros (Record Macro, View Macros)</td></tr></table></div><div class="tip standalone"><span class="tiplabel">Exam tip</span>Exam trick: if a question asks 'which tab' for a feature, match the FEATURE'S PURPOSE to the tab's purpose &mdash; Data tab = anything about getting/cleaning/analyzing data; Insert tab = anything about adding a new object (chart, table, pivot); Review tab = anything about protecting/checking; Page Layout = anything about how it prints.</div><h3 class="subhead">SPSS Menus</h3><div class="tablewrap"><table><tr><th>Menu</th><th>Contains</th></tr><tr><td><b>File</b></td><td>Open &rarr; Data (opens Data Editor); Import Data &rarr; Excel/CSV; Save/Save As (.sav for data, .spv for output)</td></tr><tr><td><b>Edit</b></td><td>Copy, Paste, Find, Options</td></tr><tr><td><b>View</b></td><td>Value Labels toggle, Variable/Data View switching, Fonts</td></tr><tr><td><b>Data</b></td><td>Sort Cases, Select Cases, Split File, Merge Files</td></tr><tr><td><b>Transform</b></td><td>Compute Variable (random numbers, new calculated variables live here), Recode into Different Variables</td></tr><tr><td><b>Analyze</b></td><td>Descriptive Statistics (Descriptives, Frequencies, Explore), Compare Means (One-Sample/Independent-Samples/Paired-Samples T Test, One-Way ANOVA), Correlate (Bivariate), Regression (Linear)</td></tr><tr><td><b>Graphs</b></td><td>Chart Builder, Legacy Dialogs</td></tr><tr><td><b>Utilities</b></td><td>Variables, Define Sets</td></tr></table></div><div class="tip standalone"><span class="tiplabel">Exam tip</span>The single most important menu is <b>Analyze</b> &mdash; almost every statistical test in this exam (Descriptives, Correlation, Regression, T-Test, ANOVA) is a sub-item under Analyze. If unsure which menu a test lives in, the answer is almost always Analyze first.</div></section>
+<section id="procedures" class="panel"><h2>Procedures</h2><div class="sectionintro">"How do I&hellip;" reference &mdash; every operation, one line each, arranged for rapid-fire lookup right before you walk in.</div><h3 class="subhead">Excel Procedures</h3><details class="qa">
+<summary><span class="qnum">&#9998;</span>Convert data to a Table</summary>
+<div class="qbody"><div class="answer">Click inside data &rarr; Ctrl+T &rarr; tick headers &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Remove duplicates</summary>
+<div class="qbody"><div class="answer">Select data &rarr; Data &rarr; Remove Duplicates &rarr; tick headers &rarr; tick columns &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Create a drop-down list</summary>
+<div class="qbody"><div class="answer">Select cells &rarr; Data &rarr; Data Validation &rarr; Allow: List &rarr; enter/select entries &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Fix numbers stored as text</summary>
+<div class="qbody"><div class="answer">Select cells &rarr; click warning icon &rarr; Convert to Number (or =VALUE(), or Text to Columns &rarr; Finish)</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Load the Data Analysis ToolPak</summary>
+<div class="qbody"><div class="answer">File &rarr; Options &rarr; Add-Ins &rarr; Manage: Excel Add-ins &rarr; Go &rarr; tick Analysis ToolPak &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Run Descriptive Statistics (ToolPak)</summary>
+<div class="qbody"><div class="answer">Data &rarr; Data Analysis &rarr; Descriptive Statistics &rarr; set Input Range &rarr; tick Summary statistics &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Run Correlation (matrix, ToolPak)</summary>
+<div class="qbody"><div class="answer">Data &rarr; Data Analysis &rarr; Correlation &rarr; set Input Range across numeric columns &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Run Regression (ToolPak)</summary>
+<div class="qbody"><div class="answer">Data &rarr; Data Analysis &rarr; Regression &rarr; Input Y Range = dependent &rarr; Input X Range = independent(s) &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Build a PivotTable</summary>
+<div class="qbody"><div class="answer">Click in data &rarr; Insert &rarr; PivotTable &rarr; New Worksheet &rarr; OK &rarr; drag fields into Rows/Columns/Values/Filters</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Refresh a PivotTable</summary>
+<div class="qbody"><div class="answer">Right-click inside it &rarr; Refresh (or Data &rarr; Refresh All)</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Add a Slicer</summary>
+<div class="qbody"><div class="answer">Click in PivotTable &rarr; PivotTable Analyze &rarr; Insert Slicer &rarr; tick field &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Add a Trendline with equation + R&sup2;</summary>
+<div class="qbody"><div class="answer">Click chart series &rarr; right-click &rarr; Add Trendline &rarr; Linear &rarr; tick Display Equation + Display R-squared</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Use Goal Seek</summary>
+<div class="qbody"><div class="answer">Data &rarr; What-If Analysis &rarr; Goal Seek &rarr; Set cell / To value / By changing cell &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Record a Macro</summary>
+<div class="qbody"><div class="answer">View &rarr; Macros &rarr; Record Macro &rarr; name it &rarr; OK &rarr; do actions &rarr; Stop Recording (saves as .xlsm)</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Protect a sheet, leave some cells editable</summary>
+<div class="qbody"><div class="answer">Select editable cells &rarr; Ctrl+1 &rarr; Protection &rarr; untick Locked &rarr; THEN Review &rarr; Protect Sheet</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Set a Print Area and fit to one page</summary>
+<div class="qbody"><div class="answer">Select range &rarr; Page Layout &rarr; Print Area &rarr; Set Print Area &rarr; then Scale to Fit &rarr; 1 page</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Import a CSV</summary>
+<div class="qbody"><div class="answer">Data &rarr; Get &amp; Transform Data &rarr; From Text/CSV &rarr; Import &rarr; confirm comma delimiter &rarr; confirm headers &rarr; Load</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Sort by two columns</summary>
+<div class="qbody"><div class="answer">Data &rarr; Sort &rarr; choose column 1 + order &rarr; Add Level &rarr; choose column 2 + order &rarr; OK</div></div>
+</details><h3 class="subhead">SPSS Procedures</h3><details class="qa">
+<summary><span class="qnum">&#9998;</span>Import a CSV/Excel file</summary>
+<div class="qbody"><div class="answer">File &rarr; Import Data &rarr; Excel/CSV &rarr; tick 'Read variable names from first row' &rarr; confirm comma delimiter &rarr; Next through wizard</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Set up a categorical variable properly</summary>
+<div class="qbody"><div class="answer">Enter codes as NUMBERS in Data View &rarr; Variable View: set Type = numeric &rarr; use Values column to attach labels (e.g. 1=Male, 2=Female)</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Generate random numbers</summary>
+<div class="qbody"><div class="answer">Transform &rarr; Compute Variable &rarr; name Target Variable &rarr; Numeric Expression: RV.UNIFORM(a,b) or RV.NORMAL(mean,sd) &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Get Mean/SD/Min/Max</summary>
+<div class="qbody"><div class="answer">Analyze &rarr; Descriptive Statistics &rarr; Descriptives &rarr; move variable across &rarr; Options &rarr; tick stats &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Get Median/Mode/frequency table</summary>
+<div class="qbody"><div class="answer">Analyze &rarr; Descriptive Statistics &rarr; Frequencies &rarr; Statistics &rarr; tick Mean/Median/Mode &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Identify outliers</summary>
+<div class="qbody"><div class="answer">Analyze &rarr; Descriptive Statistics &rarr; Explore &rarr; variable into Dependent List &rarr; Plots &rarr; tick Boxplot</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Run a Pearson correlation</summary>
+<div class="qbody"><div class="answer">Analyze &rarr; Correlate &rarr; Bivariate &rarr; move variables across &rarr; keep Pearson ticked &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Run a linear/multiple regression</summary>
+<div class="qbody"><div class="answer">Analyze &rarr; Regression &rarr; Linear &rarr; DV into Dependent, IV(s) into Independent(s) &rarr; (optional: Statistics &rarr; Collinearity diagnostics) &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Run an Independent-Samples T Test</summary>
+<div class="qbody"><div class="answer">Analyze &rarr; Compare Means &rarr; Independent-Samples T Test &rarr; Test Variable + Grouping Variable &rarr; Define Groups &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Run a Paired-Samples T Test</summary>
+<div class="qbody"><div class="answer">Analyze &rarr; Compare Means &rarr; Paired-Samples T Test &rarr; pair the two related variables &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Run a One-Way ANOVA</summary>
+<div class="qbody"><div class="answer">Analyze &rarr; Compare Means &rarr; One-Way ANOVA &rarr; DV into Dependent List, grouping var into Factor &rarr; OK</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Read the p-value in output</summary>
+<div class="qbody"><div class="answer">Look for 'Sig.' or 'Sig. (2-tailed)' in the relevant output table &mdash; that number IS the p-value</div></div>
+</details><details class="qa">
+<summary><span class="qnum">&#9998;</span>Save data vs output</summary>
+<div class="qbody"><div class="answer">Data file &rarr; .sav via Save/Save As. Output/results &rarr; .spv, saved separately from the Output Viewer window</div></div>
+</details></section>
+<section id="tips" class="panel"><h2>Final Tips</h2><div class="sectionintro">Read this section last, right before you walk in.</div><ol class="tiplist"><li>Every 'list the steps' question is graded on SEQUENCE. If you know the destination menu but forget one click in between, you still lose marks &mdash; say EVERY click, even ones that feel obvious.</li><li>For any 'differentiate X from Y' question, structure your answer as two clearly separated sentences, one per term &mdash; don't blend them into one confusing paragraph.</li><li>Nested IF: ALWAYS test the highest threshold first. This is the single most common formula mistake under time pressure.</li><li>'2 groups = t-test, 3+ groups = ANOVA' &mdash; if a question mentions comparing means across categories, count the categories FIRST before choosing your test.</li><li>Debug questions only ever break 4 things: missing import, unquoted strings, mismatched brackets, wrong function name (pl vs plt, or a stray - instead of =). Scan for these 4 first.</li><li>Always name the exact SPSS output term when asked to interpret &mdash; 'Sig. (2-tailed)' IS the p-value, R&sup2; is in the 'Model Summary' table, coefficients are in the 'Coefficients' table.</li><li>When a question gives marks split (e.g. '2 advantages and 2 limitations'), match that exact split in your answer &mdash; don't give 3 and 1.</li><li>Cylinder formulas: Volume = &pi;r&sup2;h. Total Surface Area (closed) = 2&pi;r(r+h). Don't confuse them &mdash; volume has NO (r+h) term.</li><li>If a diameter is given instead of radius, ALWAYS divide by 2 first before plugging into any formula &mdash; this is a deliberately placed trap in nearly every geometry question.</li><li>For Excel multiple regression, remember your X (independent) variables MUST be in ADJACENT columns for the ToolPak to accept them &mdash; rearrange columns if needed before running.</li><li>Keep an eye on the clock: skim ALL questions first, answer the ones you know cold immediately, come back for anything requiring more thought &mdash; never lose easy marks by running out of time on a hard question first.</li></ol><div class="tip standalone" style="margin-top:24px;">
+<span class="tiplabel">Before you go</span>
+Get to the exam hall early. Skim every question once before writing anything. Answer what you know cold first &mdash; don't bleed time on one hard question while easy marks sit unanswered elsewhere. You've covered Excel top to bottom, SPSS top to bottom, Python foundations, visualization, regression, and ANOVA. There is nothing left on this syllabus that can surprise you.
+</div></section>
+</main>
+<script>
+const navBtns = document.querySelectorAll('.navbtn');
+const panels = document.querySelectorAll('.panel');
+navBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    navBtns.forEach(b => b.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+});
+function toggleAll(btn) {
+  const activePanel = document.querySelector('.panel.active');
+  const details = activePanel.querySelectorAll('details');
+  const anyClosed = Array.from(details).some(d => !d.open);
+  details.forEach(d => d.open = anyClosed);
+  btn.textContent = anyClosed ? 'Collapse all in this section' : 'Expand all in this section';
+}
+</script>
+</body>
+</html>
